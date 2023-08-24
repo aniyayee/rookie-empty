@@ -1,9 +1,9 @@
-package com.rookie.orm.mapper;
+package com.rookie.domain.user.db;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.rookie.domain.user.dto.SysUserDTO;
 import com.rookie.domain.user.query.UserQuery;
-import com.rookie.orm.entity.SysUserEntity;
+import com.rookie.domain.user.db.SysUserEntity;
 import java.util.List;
 
 /**

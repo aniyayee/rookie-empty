@@ -1,4 +1,4 @@
-package com.rookie.controller;
+package com.rookie.controller.system;
 
 
 import com.rookie.common.core.base.BaseController;
@@ -7,7 +7,7 @@ import com.rookie.domain.role.command.AddRoleCommand;
 import com.rookie.domain.role.command.UpdateRoleCommand;
 import com.rookie.domain.role.dto.SysRoleDTO;
 import com.rookie.domain.role.query.RoleQuery;
-import com.rookie.orm.service.ISysRoleService;
+import com.rookie.domain.role.db.ISysRoleService;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.annotation.Resource;

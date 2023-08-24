@@ -1,4 +1,4 @@
-package com.rookie.controller;
+package com.rookie.controller.system;
 
 
 import com.rookie.common.core.base.BaseController;
@@ -8,7 +8,7 @@ import com.rookie.domain.user.command.UpdateUserCommand;
 import com.rookie.domain.user.command.UpdateUserPasswordCommand;
 import com.rookie.domain.user.dto.SysUserDTO;
 import com.rookie.domain.user.query.UserQuery;
-import com.rookie.orm.service.ISysUserService;
+import com.rookie.domain.user.db.ISysUserService;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.annotation.Resource;

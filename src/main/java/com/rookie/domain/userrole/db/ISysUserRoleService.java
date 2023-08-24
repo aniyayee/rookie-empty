@@ -1,7 +1,6 @@
-package com.rookie.orm.service;
+package com.rookie.domain.userrole.db;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.rookie.orm.entity.SysUserRoleEntity;
 
 /**
  * <p>

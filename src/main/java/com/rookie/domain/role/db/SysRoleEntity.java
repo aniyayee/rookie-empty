@@ -1,4 +1,4 @@
-package com.rookie.orm.entity;
+package com.rookie.domain.role.db;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

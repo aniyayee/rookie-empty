@@ -1,7 +1,7 @@
-package com.rookie.orm.mapper;
+package com.rookie.domain.role.db;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.rookie.orm.entity.SysRoleEntity;
+import com.rookie.domain.role.db.SysRoleEntity;
 
 /**
  * <p>

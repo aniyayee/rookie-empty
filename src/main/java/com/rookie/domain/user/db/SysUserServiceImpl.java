@@ -1,4 +1,4 @@
-package com.rookie.orm.service.impl;
+package com.rookie.domain.user.db;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -11,9 +11,6 @@ import com.rookie.domain.user.command.UpdateUserCommand;
 import com.rookie.domain.user.command.UpdateUserPasswordCommand;
 import com.rookie.domain.user.dto.SysUserDTO;
 import com.rookie.domain.user.query.UserQuery;
-import com.rookie.orm.entity.SysUserEntity;
-import com.rookie.orm.mapper.SysUserMapper;
-import com.rookie.orm.service.ISysUserService;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

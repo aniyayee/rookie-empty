@@ -1,9 +1,6 @@
-package com.rookie.orm.service.impl;
+package com.rookie.domain.userrole.db;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rookie.orm.entity.SysUserRoleEntity;
-import com.rookie.orm.mapper.SysUserRoleMapper;
-import com.rookie.orm.service.ISysUserRoleService;
 import org.springframework.stereotype.Service;
 
 /**

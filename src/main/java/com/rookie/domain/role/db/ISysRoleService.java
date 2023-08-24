@@ -1,11 +1,11 @@
-package com.rookie.orm.service;
+package com.rookie.domain.role.db;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rookie.domain.role.command.AddRoleCommand;
 import com.rookie.domain.role.command.UpdateRoleCommand;
 import com.rookie.domain.role.dto.SysRoleDTO;
 import com.rookie.domain.role.query.RoleQuery;
-import com.rookie.orm.entity.SysRoleEntity;
+import com.rookie.domain.role.db.SysRoleEntity;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.rookie.controller;
+package com.rookie.controller.system;
 
 
 import com.rookie.common.core.base.BaseController;

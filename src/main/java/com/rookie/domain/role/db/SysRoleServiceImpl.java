@@ -1,4 +1,4 @@
-package com.rookie.orm.service.impl;
+package com.rookie.domain.role.db;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -9,9 +9,9 @@ import com.rookie.domain.role.command.AddRoleCommand;
 import com.rookie.domain.role.command.UpdateRoleCommand;
 import com.rookie.domain.role.dto.SysRoleDTO;
 import com.rookie.domain.role.query.RoleQuery;
-import com.rookie.orm.entity.SysRoleEntity;
-import com.rookie.orm.mapper.SysRoleMapper;
-import com.rookie.orm.service.ISysRoleService;
+import com.rookie.domain.role.db.SysRoleEntity;
+import com.rookie.domain.role.db.SysRoleMapper;
+import com.rookie.domain.role.db.ISysRoleService;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

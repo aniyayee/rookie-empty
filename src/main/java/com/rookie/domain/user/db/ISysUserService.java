@@ -1,4 +1,4 @@
-package com.rookie.orm.service;
+package com.rookie.domain.user.db;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rookie.domain.user.command.AddUserCommand;
@@ -6,7 +6,7 @@ import com.rookie.domain.user.command.UpdateUserCommand;
 import com.rookie.domain.user.command.UpdateUserPasswordCommand;
 import com.rookie.domain.user.dto.SysUserDTO;
 import com.rookie.domain.user.query.UserQuery;
-import com.rookie.orm.entity.SysUserEntity;
+import com.rookie.domain.user.db.SysUserEntity;
 import java.util.List;
 
 /**
