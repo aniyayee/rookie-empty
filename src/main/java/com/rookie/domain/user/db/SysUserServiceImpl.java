@@ -40,6 +40,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     @Override
     public void updateUser(UpdateUserCommand command) {
         SysUserEntity entity = BeanUtil.copyProperties(command, SysUserEntity.class);
+        if (ObjectUtil.isEmpty(entity)) {
+            throw new ApiException(Business.COMMON_OBJECT_NOT_FOUND, command.getUserId(), "用户");
+        }
         if (this.isUserNameDuplicated(entity.getUsername(), entity.getUserId())) {
             throw new ApiException(Business.USER_NAME_IS_NOT_UNIQUE);
         }

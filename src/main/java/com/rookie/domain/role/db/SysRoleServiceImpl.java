@@ -37,6 +37,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
     @Override
     public void updateRole(UpdateRoleCommand command) {
         SysRoleEntity entity = BeanUtil.copyProperties(command, SysRoleEntity.class);
+        if (ObjectUtil.isEmpty(entity)) {
+            throw new ApiException(Business.COMMON_OBJECT_NOT_FOUND, command.getRoleId(), "角色");
+        }
         baseMapper.updateById(entity);
     }
 
