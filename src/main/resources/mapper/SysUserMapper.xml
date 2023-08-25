@@ -8,7 +8,7 @@
            u.password,
            u.nickname,
            u.email,
-           u.phone_number,
+           u.phone,
            u.creator_id,
            u.create_time,
            u.updater_id,
@@ -29,8 +29,8 @@
     <if test="email != null and email != ''">
       AND u.email like concat('%', #{email}, '%')
     </if>
-    <if test="phoneNumber != null and phoneNumber != ''">
-      AND u.phone_number like concat('%', #{phoneNumber}, '%')
+    <if test="phone != null and phone != ''">
+      AND u.phone like concat('%', #{phone}, '%')
     </if>
   </select>
 </mapper>
