@@ -1,6 +1,7 @@
 package com.rookie.domain.user.db;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rookie.common.exception.ApiException;
@@ -56,7 +57,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     @Override
     public SysUserDTO queryById(Long userId) {
         SysUserEntity entity = baseMapper.selectById(userId);
-        return BeanUtil.copyProperties(entity, SysUserDTO.class);
+        return ObjectUtil.isNotEmpty(entity) ? BeanUtil.copyProperties(entity, SysUserDTO.class) : null;
     }
 
     @Override
@@ -83,7 +84,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
         QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         SysUserEntity entity = baseMapper.selectOne(queryWrapper);
-        return BeanUtil.copyProperties(entity, SysUserDTO.class);
+        return ObjectUtil.isNotEmpty(entity) ? BeanUtil.copyProperties(entity, SysUserDTO.class) : null;
     }
 
     @Override

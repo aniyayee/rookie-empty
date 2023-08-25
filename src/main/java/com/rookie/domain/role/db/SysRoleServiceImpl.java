@@ -1,6 +1,7 @@
 package com.rookie.domain.role.db;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rookie.common.exception.ApiException;
@@ -47,7 +48,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
     @Override
     public SysRoleDTO queryById(Long roleId) {
         SysRoleEntity entity = baseMapper.selectById(roleId);
-        return BeanUtil.copyProperties(entity, SysRoleDTO.class);
+        return ObjectUtil.isNotEmpty(entity) ? BeanUtil.copyProperties(entity, SysRoleDTO.class) : null;
     }
 
     @Override
@@ -64,7 +65,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
         QueryWrapper<SysRoleEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("role_name", roleName);
         SysRoleEntity entity = baseMapper.selectOne(queryWrapper);
-        return BeanUtil.copyProperties(entity, SysRoleDTO.class);
+        return ObjectUtil.isNotEmpty(entity) ? BeanUtil.copyProperties(entity, SysRoleDTO.class) : null;
     }
 
     @Override
