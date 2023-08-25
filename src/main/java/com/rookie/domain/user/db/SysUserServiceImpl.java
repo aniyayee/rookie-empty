@@ -3,9 +3,8 @@ package com.rookie.domain.user.db;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rookie.common.constants.ErrorCode;
-import com.rookie.common.constants.ErrorCode.Business;
 import com.rookie.common.exception.ApiException;
+import com.rookie.common.exception.error.ErrorCode.Business;
 import com.rookie.domain.user.command.AddUserCommand;
 import com.rookie.domain.user.command.UpdateUserCommand;
 import com.rookie.domain.user.command.UpdateUserPasswordCommand;
@@ -28,11 +27,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     @Override
     public void addUser(AddUserCommand command) {
         SysUserEntity entity = BeanUtil.copyProperties(command, SysUserEntity.class);
-        if (this.isUserNameDuplicated(entity.getUsername())) {
-            throw new ApiException(ErrorCode.Business.USER_NAME_IS_NOT_UNIQUE.getMsg());
+        if (this.isUserNameDuplicated(entity.getUsername(), null)) {
+            throw new ApiException(Business.USER_NAME_IS_NOT_UNIQUE);
         }
-        if (this.isPhoneNumberDuplicated(entity.getPhoneNumber(), entity.getUserId())) {
-            throw new ApiException(Business.PHONE_NUMBER_IS_NOT_UNIQUE.getMsg());
+        if (this.isPhoneDuplicated(entity.getPhone(), null)) {
+            throw new ApiException(Business.USER_PHONE_IS_NOT_UNIQUE);
         }
         baseMapper.insert(entity);
     }
@@ -40,8 +39,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     @Override
     public void updateUser(UpdateUserCommand command) {
         SysUserEntity entity = BeanUtil.copyProperties(command, SysUserEntity.class);
-        if (this.isPhoneNumberDuplicated(entity.getPhoneNumber(), entity.getUserId())) {
-            throw new ApiException(Business.PHONE_NUMBER_IS_NOT_UNIQUE.getMsg());
+        if (this.isUserNameDuplicated(entity.getUsername(), entity.getUserId())) {
+            throw new ApiException(Business.USER_NAME_IS_NOT_UNIQUE);
+        }
+        if (this.isPhoneDuplicated(entity.getPhone(), entity.getUserId())) {
+            throw new ApiException(Business.USER_PHONE_IS_NOT_UNIQUE);
         }
         baseMapper.updateById(entity);
     }
@@ -66,13 +68,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     public void updatePassword(UpdateUserPasswordCommand command) {
         SysUserEntity entity = baseMapper.selectById(command.getUserId());
         if (StringUtils.equals(command.getNewPassword(), command.getOldPassword())) {
-            throw new ApiException(ErrorCode.Business.SAME_NEW_AND_OLD_PASSWORDS.getMsg());
+            throw new ApiException(Business.USER_NEW_PASSWORD_IS_THE_SAME_AS_OLD);
         }
         if (StringUtils.equals(entity.getPassword(), command.getOldPassword())) {
             entity.setPassword(command.getNewPassword());
             baseMapper.updateById(entity);
         } else {
-            throw new ApiException(ErrorCode.Business.USER_PASSWORD_IS_NOT_CORRECT.getMsg());
+            throw new ApiException(Business.USER_PASSWORD_IS_NOT_CORRECT);
         }
     }
 
@@ -85,17 +87,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     }
 
     @Override
-    public boolean isUserNameDuplicated(String username) {
+    public boolean isUserNameDuplicated(String username, Long userId) {
         QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
+        queryWrapper.ne(userId != null, "user_id", userId)
+            .eq("username", username);
         return baseMapper.exists(queryWrapper);
     }
 
     @Override
-    public boolean isPhoneNumberDuplicated(String phoneNumber, Long userId) {
+    public boolean isPhoneDuplicated(String phone, Long userId) {
         QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.ne(userId != null, "user_id", userId)
-            .eq("phone_number", phoneNumber);
+            .eq("phone", phone);
         return baseMapper.exists(queryWrapper);
     }
 }
