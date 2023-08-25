@@ -68,6 +68,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     @Override
     public void updatePassword(UpdateUserPasswordCommand command) {
         SysUserEntity entity = baseMapper.selectById(command.getUserId());
+        if (ObjectUtil.isEmpty(entity)) {
+            throw new ApiException(Business.COMMON_OBJECT_NOT_FOUND, command.getUserId(), "用户");
+        }
         if (StringUtils.equals(command.getNewPassword(), command.getOldPassword())) {
             throw new ApiException(Business.USER_NEW_PASSWORD_IS_THE_SAME_AS_OLD);
         }
