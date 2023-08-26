@@ -27,11 +27,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
     @Override
     public void addRole(AddRoleCommand command) {
         SysRoleEntity entity = BeanUtil.copyProperties(command, SysRoleEntity.class);
-        if (this.isRoleNameDuplicated(entity.getRoleName())) {
+        if (this.isRoleNameDuplicated(entity.getRoleName(), null)) {
             throw new ApiException(Business.ROLE_NAME_IS_NOT_UNIQUE);
-        } else {
-            baseMapper.insert(entity);
         }
+        baseMapper.insert(entity);
     }
 
     @Override
@@ -39,6 +38,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
         SysRoleEntity entity = BeanUtil.copyProperties(command, SysRoleEntity.class);
         if (ObjectUtil.isEmpty(entity)) {
             throw new ApiException(Business.COMMON_OBJECT_NOT_FOUND, command.getRoleId(), "角色");
+        }
+        if (this.isRoleNameDuplicated(entity.getRoleName(), command.getRoleId())) {
+            throw new ApiException(Business.ROLE_NAME_IS_NOT_UNIQUE);
         }
         baseMapper.updateById(entity);
     }
@@ -72,9 +74,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
     }
 
     @Override
-    public boolean isRoleNameDuplicated(String roleName) {
+    public boolean isRoleNameDuplicated(String roleName, Long roleId) {
         QueryWrapper<SysRoleEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("role_name", roleName);
+        queryWrapper.ne(roleId != null, "role_id", roleId)
+            .eq("role_name", roleName);
         return baseMapper.exists(queryWrapper);
     }
 }

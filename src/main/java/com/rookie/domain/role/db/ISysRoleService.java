@@ -5,7 +5,6 @@ import com.rookie.domain.role.command.AddRoleCommand;
 import com.rookie.domain.role.command.UpdateRoleCommand;
 import com.rookie.domain.role.dto.SysRoleDTO;
 import com.rookie.domain.role.query.RoleQuery;
-import com.rookie.domain.role.db.SysRoleEntity;
 import java.util.List;
 
 /**
@@ -29,5 +28,5 @@ public interface ISysRoleService extends IService<SysRoleEntity> {
 
     SysRoleDTO queryByRoleName(String roleName);
 
-    boolean isRoleNameDuplicated(String roleName);
+    boolean isRoleNameDuplicated(String roleName, Long roleId);
 }
