@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rookie.common.core.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,12 +30,15 @@ public class SysUserEntity extends BaseEntity<SysUserEntity> {
     @TableId(value = "user_id", type = IdType.AUTO)
     private Long userId;
 
+    @ApiModelProperty("角色ID")
+    @TableField(value = "role_id")
+    private Long roleId;
+
     @ApiModelProperty("用户账号")
     @TableField("username")
     private String username;
 
     @ApiModelProperty("密码")
-    @JsonIgnore
     @TableField("`password`")
     private String password;
 

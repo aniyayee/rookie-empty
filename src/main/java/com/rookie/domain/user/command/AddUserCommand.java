@@ -12,6 +12,9 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class AddUserCommand {
 
+    @ApiModelProperty("角色ID")
+    private Long roleId;
+
     @ApiModelProperty("用户账号")
     @NotEmpty(message = "could not be empty")
     @Length(min = 1, max = 32, message = "username should be 1-32")

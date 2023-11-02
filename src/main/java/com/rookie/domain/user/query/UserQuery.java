@@ -9,6 +9,9 @@ import lombok.Data;
 @Data
 public class UserQuery {
 
+    @ApiModelProperty("角色ID")
+    private Long roleId;
+
     @ApiModelProperty("用户账号")
     private String username;
 

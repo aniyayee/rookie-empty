@@ -2,8 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rookie.domain.user.db.SysUserMapper">
+
+  <!--  保留xml的形式 以备特别复杂的报表查询语句使用-->
+
   <sql id="selectUserSql">
     select u.user_id,
+           u.role_id,
            u.username,
            u.password,
            u.nickname,
@@ -17,9 +21,12 @@
     from sys_user u
   </sql>
 
-  <select id="findList" resultType="com.rookie.domain.user.dto.SysUserDTO">
+  <select id="findList" resultType="com.rookie.domain.user.dto.UserDTO">
     <include refid="selectUserSql"/>
     where u.deleted = 0
+    <if test="roleId != null">
+      AND u.role_id = #{roleId}
+    </if>
     <if test="username != null and username != ''">
       AND u.username like concat('%', #{username}, '%')
     </if>

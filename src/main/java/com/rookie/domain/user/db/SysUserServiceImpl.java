@@ -9,7 +9,7 @@ import com.rookie.common.exception.error.ErrorCode.Business;
 import com.rookie.domain.user.command.AddUserCommand;
 import com.rookie.domain.user.command.UpdateUserCommand;
 import com.rookie.domain.user.command.UpdateUserPasswordCommand;
-import com.rookie.domain.user.dto.SysUserDTO;
+import com.rookie.domain.user.dto.UserDTO;
 import com.rookie.domain.user.query.UserQuery;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -58,13 +58,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     }
 
     @Override
-    public SysUserDTO queryById(Long userId) {
+    public UserDTO queryById(Long userId) {
         SysUserEntity entity = baseMapper.selectById(userId);
-        return ObjectUtil.isNotEmpty(entity) ? BeanUtil.copyProperties(entity, SysUserDTO.class) : null;
+        return ObjectUtil.isNotEmpty(entity) ? BeanUtil.copyProperties(entity, UserDTO.class) : null;
     }
 
     @Override
-    public List<SysUserDTO> findList(UserQuery query) {
+    public List<UserDTO> findList(UserQuery query) {
         return baseMapper.findList(query);
     }
 
@@ -86,11 +86,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     }
 
     @Override
-    public SysUserDTO queryByUsername(String username) {
+    public UserDTO queryByUsername(String username) {
         QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         SysUserEntity entity = baseMapper.selectOne(queryWrapper);
-        return ObjectUtil.isNotEmpty(entity) ? BeanUtil.copyProperties(entity, SysUserDTO.class) : null;
+        return ObjectUtil.isNotEmpty(entity) ? BeanUtil.copyProperties(entity, UserDTO.class) : null;
     }
 
     @Override

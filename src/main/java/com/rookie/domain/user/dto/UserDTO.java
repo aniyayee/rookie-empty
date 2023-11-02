@@ -8,10 +8,13 @@ import lombok.Data;
  * @author yayee
  */
 @Data
-public class SysUserDTO {
+public class UserDTO {
 
     @ApiModelProperty("用户ID")
     private Long userId;
+
+    @ApiModelProperty("角色ID")
+    private Long roleId;
 
     @ApiModelProperty("用户账号")
     private String username;

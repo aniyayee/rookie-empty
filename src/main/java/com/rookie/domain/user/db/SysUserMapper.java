@@ -1,9 +1,8 @@
 package com.rookie.domain.user.db;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.rookie.domain.user.dto.SysUserDTO;
+import com.rookie.domain.user.dto.UserDTO;
 import com.rookie.domain.user.query.UserQuery;
-import com.rookie.domain.user.db.SysUserEntity;
 import java.util.List;
 
 /**
@@ -15,5 +14,5 @@ import java.util.List;
  */
 public interface SysUserMapper extends BaseMapper<SysUserEntity> {
 
-    List<SysUserDTO> findList(UserQuery query);
+    List<UserDTO> findList(UserQuery query);
 }
