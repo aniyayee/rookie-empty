@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rookie.common.exception.ApiException;
+import com.rookie.common.exception.RookieRuntimeException;
 import com.rookie.common.exception.error.ErrorCode.Business;
 import com.rookie.domain.user.command.AddUserCommand;
 import com.rookie.domain.user.command.UpdateUserCommand;
@@ -29,10 +29,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     public void addUser(AddUserCommand command) {
         SysUserEntity entity = BeanUtil.copyProperties(command, SysUserEntity.class);
         if (this.isUserNameDuplicated(entity.getUsername(), null)) {
-            throw new ApiException(Business.USER_NAME_IS_NOT_UNIQUE);
+            throw new RookieRuntimeException(Business.USER_NAME_IS_NOT_UNIQUE);
         }
         if (this.isPhoneDuplicated(entity.getPhone(), null)) {
-            throw new ApiException(Business.USER_PHONE_IS_NOT_UNIQUE);
+            throw new RookieRuntimeException(Business.USER_PHONE_IS_NOT_UNIQUE);
         }
         baseMapper.insert(entity);
     }
@@ -41,13 +41,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     public void updateUser(UpdateUserCommand command) {
         SysUserEntity entity = BeanUtil.copyProperties(command, SysUserEntity.class);
         if (ObjectUtil.isEmpty(entity)) {
-            throw new ApiException(Business.COMMON_OBJECT_NOT_FOUND, command.getUserId(), "用户");
+            throw new RookieRuntimeException(Business.COMMON_OBJECT_NOT_FOUND, command.getUserId(), "用户");
         }
         if (this.isUserNameDuplicated(entity.getUsername(), entity.getUserId())) {
-            throw new ApiException(Business.USER_NAME_IS_NOT_UNIQUE);
+            throw new RookieRuntimeException(Business.USER_NAME_IS_NOT_UNIQUE);
         }
         if (this.isPhoneDuplicated(entity.getPhone(), entity.getUserId())) {
-            throw new ApiException(Business.USER_PHONE_IS_NOT_UNIQUE);
+            throw new RookieRuntimeException(Business.USER_PHONE_IS_NOT_UNIQUE);
         }
         baseMapper.updateById(entity);
     }
@@ -72,16 +72,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     public void updatePassword(UpdateUserPasswordCommand command) {
         SysUserEntity entity = baseMapper.selectById(command.getUserId());
         if (ObjectUtil.isEmpty(entity)) {
-            throw new ApiException(Business.COMMON_OBJECT_NOT_FOUND, command.getUserId(), "用户");
+            throw new RookieRuntimeException(Business.COMMON_OBJECT_NOT_FOUND, command.getUserId(), "用户");
         }
         if (StringUtils.equals(command.getNewPassword(), command.getOldPassword())) {
-            throw new ApiException(Business.USER_NEW_PASSWORD_IS_THE_SAME_AS_OLD);
+            throw new RookieRuntimeException(Business.USER_NEW_PASSWORD_IS_THE_SAME_AS_OLD);
         }
         if (StringUtils.equals(entity.getPassword(), command.getOldPassword())) {
             entity.setPassword(command.getNewPassword());
             baseMapper.updateById(entity);
         } else {
-            throw new ApiException(Business.USER_PASSWORD_IS_NOT_CORRECT);
+            throw new RookieRuntimeException(Business.USER_PASSWORD_IS_NOT_CORRECT);
         }
     }
 

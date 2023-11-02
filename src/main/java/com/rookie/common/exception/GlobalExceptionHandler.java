@@ -58,8 +58,8 @@ public class GlobalExceptionHandler {
      * @return ResponseDTO
      */
     @ResponseBody
-    @ExceptionHandler(ApiException.class)
-    public ResponseDTO<?> processApiException(ApiException e) {
+    @ExceptionHandler(RookieRuntimeException.class)
+    public ResponseDTO<?> processApiException(RookieRuntimeException e) {
         log.error(e.getMessage(), e);
         return ResponseDTO.fail(e, e.getPayload());
     }
@@ -74,6 +74,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseDTO<?> processException(Exception e) {
         log.error(e.getMessage(), e);
-        return ResponseDTO.fail(new ApiException(ErrorCode.HTTP_STATUS_500));
+        return ResponseDTO.fail(new RookieRuntimeException(ErrorCode.HTTP_STATUS_500));
     }
 }

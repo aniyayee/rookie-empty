@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rookie.common.exception.ApiException;
+import com.rookie.common.exception.RookieRuntimeException;
 import com.rookie.common.exception.error.ErrorCode.Business;
 import com.rookie.domain.role.command.AddRoleCommand;
 import com.rookie.domain.role.command.UpdateRoleCommand;
@@ -28,7 +28,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
     public void addRole(AddRoleCommand command) {
         SysRoleEntity entity = BeanUtil.copyProperties(command, SysRoleEntity.class);
         if (this.isRoleNameDuplicated(entity.getRoleName(), null)) {
-            throw new ApiException(Business.ROLE_NAME_IS_NOT_UNIQUE);
+            throw new RookieRuntimeException(Business.ROLE_NAME_IS_NOT_UNIQUE);
         }
         baseMapper.insert(entity);
     }
@@ -37,10 +37,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
     public void updateRole(UpdateRoleCommand command) {
         SysRoleEntity entity = BeanUtil.copyProperties(command, SysRoleEntity.class);
         if (ObjectUtil.isEmpty(entity)) {
-            throw new ApiException(Business.COMMON_OBJECT_NOT_FOUND, command.getRoleId(), "角色");
+            throw new RookieRuntimeException(Business.COMMON_OBJECT_NOT_FOUND, command.getRoleId(), "角色");
         }
         if (this.isRoleNameDuplicated(entity.getRoleName(), command.getRoleId())) {
-            throw new ApiException(Business.ROLE_NAME_IS_NOT_UNIQUE);
+            throw new RookieRuntimeException(Business.ROLE_NAME_IS_NOT_UNIQUE);
         }
         baseMapper.updateById(entity);
     }

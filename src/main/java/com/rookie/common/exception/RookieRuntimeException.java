@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
 @Data
-public class ApiException extends RuntimeException {
+public class RookieRuntimeException extends RuntimeException {
 
     protected ErrorCodeInterface errorCode;
 
@@ -27,15 +27,15 @@ public class ApiException extends RuntimeException {
      */
     protected HashMap<String, Object> payload;
 
-    public ApiException(ErrorCodeInterface errorCode) {
+    public RookieRuntimeException(ErrorCodeInterface errorCode) {
         fillErrorCode(errorCode);
     }
 
-    public ApiException(ErrorCodeInterface errorCode, Object... args) {
+    public RookieRuntimeException(ErrorCodeInterface errorCode, Object... args) {
         fillErrorCode(errorCode, args);
     }
 
-    public ApiException(Throwable e, ErrorCodeInterface errorCode, Object... args) {
+    public RookieRuntimeException(Throwable e, ErrorCodeInterface errorCode, Object... args) {
         super(e);
         fillErrorCode(errorCode, args);
     }
