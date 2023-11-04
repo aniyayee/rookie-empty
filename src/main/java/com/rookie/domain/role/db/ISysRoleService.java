@@ -1,11 +1,6 @@
 package com.rookie.domain.role.db;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.rookie.domain.role.command.AddRoleCommand;
-import com.rookie.domain.role.command.UpdateRoleCommand;
-import com.rookie.domain.role.dto.SysRoleDTO;
-import com.rookie.domain.role.query.RoleQuery;
-import java.util.List;
 
 /**
  * <p>
@@ -16,17 +11,11 @@ import java.util.List;
  */
 public interface ISysRoleService extends IService<SysRoleEntity> {
 
-    void addRole(AddRoleCommand command);
+    boolean isRoleNameDuplicated(Long id, String roleName);
 
-    void updateRole(UpdateRoleCommand command);
+    boolean isRoleKeyDuplicated(Long id, String roleKey);
 
-    void deleteById(Long roleId);
+    SysRoleEntity loadById(Long id);
 
-    SysRoleDTO queryById(Long roleId);
-
-    List<SysRoleDTO> findList(RoleQuery roleQueryBean);
-
-    SysRoleDTO queryByRoleName(String roleName);
-
-    boolean isRoleNameDuplicated(String roleName, Long roleId);
+    boolean isAssignedToUsers(Long id);
 }

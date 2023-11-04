@@ -1,5 +1,6 @@
 package com.rookie.domain.role.dto;
 
+import com.rookie.domain.role.db.SysRoleEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -7,7 +8,16 @@ import lombok.Data;
  * @author yayee
  */
 @Data
-public class SysRoleDTO {
+public class RoleDTO {
+
+    public RoleDTO(SysRoleEntity entity) {
+        if (entity != null) {
+            this.roleId = entity.getRoleId();
+            this.roleName = entity.getRoleName();
+            this.roleKey = entity.getRoleKey();
+            this.remark = entity.getRemark();
+        }
+    }
 
     @ApiModelProperty("角色ID")
     private Long roleId;

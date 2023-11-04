@@ -1,18 +1,17 @@
 package com.rookie.controller.system;
 
-
 import com.rookie.common.core.base.BaseController;
 import com.rookie.common.core.dto.ResponseDTO;
+import com.rookie.common.core.page.PageDTO;
+import com.rookie.domain.role.RoleApplicationService;
 import com.rookie.domain.role.command.AddRoleCommand;
 import com.rookie.domain.role.command.UpdateRoleCommand;
-import com.rookie.domain.role.db.ISysRoleService;
-import com.rookie.domain.role.dto.SysRoleDTO;
+import com.rookie.domain.role.dto.RoleDTO;
 import com.rookie.domain.role.query.RoleQuery;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,48 +29,44 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "Role Interfaces", tags = "Role Interfaces")
 @RestController
 @RequestMapping("/system/role")
+@Validated
+@RequiredArgsConstructor
 public class SysRoleController extends BaseController {
 
-    @Resource
-    private ISysRoleService roleService;
+    private final RoleApplicationService roleApplicationService;
 
     @ApiOperation("Add role")
     @PostMapping("/add")
-    public ResponseDTO<Void> add(@Valid @RequestBody AddRoleCommand command) {
-        roleService.addRole(command);
+    public ResponseDTO<Void> add(@Validated @RequestBody AddRoleCommand command) {
+        roleApplicationService.addRole(command);
         return ResponseDTO.ok();
     }
 
     @ApiOperation("Edit role")
     @PostMapping("/edit")
-    public ResponseDTO<Void> edit(@Valid @RequestBody UpdateRoleCommand command) {
-        roleService.updateRole(command);
+    public ResponseDTO<Void> edit(@RequestBody UpdateRoleCommand command) {
+        roleApplicationService.updateRole(command);
         return ResponseDTO.ok();
     }
 
     @ApiOperation("Delete role")
-    @GetMapping("/delete/{roleId}")
-    public ResponseDTO<Void> deleteById(@PathVariable("roleId") Long roleId) {
-        roleService.deleteById(roleId);
+    @PostMapping("/delete/{roleId}")
+    public ResponseDTO<Void> remove(@PathVariable Long roleId) {
+        roleApplicationService.deleteRole(roleId);
         return ResponseDTO.ok();
     }
 
     @ApiOperation("Query role By roleId")
     @GetMapping("/queryById/{roleId}")
-    public ResponseDTO<SysRoleDTO> queryById(@PathVariable("roleId") Long roleId) {
-        return ResponseDTO.ok(roleService.queryById(roleId));
+    public ResponseDTO<RoleDTO> getInfo(@PathVariable Long roleId) {
+        RoleDTO role = roleApplicationService.getRoleInfo(roleId);
+        return ResponseDTO.ok(role);
     }
 
     @ApiOperation("Query role List")
-    @PostMapping("list")
-    public ResponseDTO<List<SysRoleDTO>> list(RoleQuery roleQuery) {
-        return ResponseDTO.ok(roleService.findList(roleQuery));
-    }
-
-    @ApiOperation("Query role By roleName")
-    @GetMapping("/queryByRoleName/{roleName}")
-    public ResponseDTO<SysRoleDTO> queryByRoleName(@PathVariable("roleName") String roleName) {
-        return ResponseDTO.ok(roleService.queryByRoleName(roleName));
+    @GetMapping("/list")
+    public ResponseDTO<PageDTO<RoleDTO>> list(RoleQuery query) {
+        PageDTO<RoleDTO> pageDTO = roleApplicationService.getRoleList(query);
+        return ResponseDTO.ok(pageDTO);
     }
 }
-
