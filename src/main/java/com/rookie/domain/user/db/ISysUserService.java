@@ -1,12 +1,6 @@
 package com.rookie.domain.user.db;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.rookie.domain.user.command.AddUserCommand;
-import com.rookie.domain.user.command.UpdateUserCommand;
-import com.rookie.domain.user.command.UpdateUserPasswordCommand;
-import com.rookie.domain.user.dto.UserDTO;
-import com.rookie.domain.user.query.UserQuery;
-import java.util.List;
 
 /**
  * <p>
@@ -17,21 +11,9 @@ import java.util.List;
  */
 public interface ISysUserService extends IService<SysUserEntity> {
 
-    void addUser(AddUserCommand command);
+    boolean isUserNameDuplicated(Long id, String username);
 
-    void updateUser(UpdateUserCommand command);
+    boolean isPhoneDuplicated(Long id, String phone);
 
-    void deleteById(Long userId);
-
-    UserDTO queryById(Long userId);
-
-    List<UserDTO> findList(UserQuery query);
-
-    void updatePassword(UpdateUserPasswordCommand command);
-
-    UserDTO queryByUsername(String username);
-
-    boolean isUserNameDuplicated(String username, Long userId);
-
-    boolean isPhoneDuplicated(String phone, Long userId);
+    SysUserEntity loadById(Long id);
 }

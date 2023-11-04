@@ -2,16 +2,17 @@ package com.rookie.controller.system;
 
 import com.rookie.common.core.base.BaseController;
 import com.rookie.common.core.dto.ResponseDTO;
+import com.rookie.common.core.page.PageDTO;
+import com.rookie.domain.user.UserApplicationService;
 import com.rookie.domain.user.command.AddUserCommand;
 import com.rookie.domain.user.command.UpdateUserCommand;
 import com.rookie.domain.user.command.UpdateUserPasswordCommand;
-import com.rookie.domain.user.db.ISysUserService;
 import com.rookie.domain.user.dto.UserDTO;
 import com.rookie.domain.user.query.UserQuery;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
-import javax.annotation.Resource;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,54 +30,51 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "User Interfaces", tags = "User Interfaces")
 @RestController
 @RequestMapping("/system/user")
+@Validated
+@RequiredArgsConstructor
 public class SysUserController extends BaseController {
 
-    @Resource
-    private ISysUserService userService;
+    private final UserApplicationService userApplicationService;
 
     @ApiOperation("Add user")
     @PostMapping("/add")
-    public ResponseDTO<Void> add(@RequestBody AddUserCommand command) {
-        userService.addUser(command);
+    public ResponseDTO<Void> add(@Validated @RequestBody AddUserCommand command) {
+        userApplicationService.addUser(command);
         return ResponseDTO.ok();
     }
 
     @ApiOperation("Edit user")
     @PostMapping("/edit")
     public ResponseDTO<Void> edit(@RequestBody UpdateUserCommand command) {
-        userService.updateUser(command);
+        userApplicationService.updateUser(command);
         return ResponseDTO.ok();
     }
 
     @ApiOperation("Delete user")
-    @GetMapping("/delete/{userId}")
-    public ResponseDTO<Void> deleteById(@PathVariable("userId") Long userId) {
-        userService.deleteById(userId);
+    @PostMapping("/delete/{userId}")
+    public ResponseDTO<Void> remove(@PathVariable Long userId) {
+        userApplicationService.deleteUser(userId);
         return ResponseDTO.ok();
     }
 
     @ApiOperation("Query user By userId")
     @GetMapping("/queryById/{userId}")
-    public ResponseDTO<UserDTO> queryById(@PathVariable("userId") Long userId) {
-        return ResponseDTO.ok(userService.queryById(userId));
+    public ResponseDTO<UserDTO> getInfo(@PathVariable Long userId) {
+        UserDTO user = userApplicationService.getUserInfo(userId);
+        return ResponseDTO.ok(user);
     }
 
     @ApiOperation("Query user List")
-    @PostMapping("/list")
-    public ResponseDTO<List<UserDTO>> list(UserQuery userQuery) {
-        return ResponseDTO.ok(userService.findList(userQuery));
+    @GetMapping("/list")
+    public ResponseDTO<PageDTO<UserDTO>> list(UserQuery query) {
+        PageDTO<UserDTO> pageDTO = userApplicationService.getUserList(query);
+        return ResponseDTO.ok(pageDTO);
     }
 
     @ApiOperation("Update user password")
     @PostMapping("/password")
     public ResponseDTO<Void> updatePassword(@RequestBody UpdateUserPasswordCommand command) {
-        userService.updatePassword(command);
+        userApplicationService.updatePassword(command);
         return ResponseDTO.ok();
-    }
-
-    @ApiOperation("Query user By username")
-    @GetMapping("/queryByUsername/{username}")
-    public ResponseDTO<UserDTO> queryByUsername(@PathVariable("username") String username) {
-        return ResponseDTO.ok(userService.queryByUsername(username));
     }
 }

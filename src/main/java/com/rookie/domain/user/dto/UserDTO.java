@@ -1,6 +1,7 @@
 package com.rookie.domain.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rookie.domain.user.db.SysUserEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -9,6 +10,19 @@ import lombok.Data;
  */
 @Data
 public class UserDTO {
+
+    public UserDTO(SysUserEntity entity) {
+        if (entity != null) {
+            this.userId = entity.getUserId();
+            this.roleId = entity.getRoleId();
+            this.username = entity.getUsername();
+            this.password = entity.getPassword();
+            this.nickname = entity.getNickname();
+            this.email = entity.getEmail();
+            this.phone = entity.getPhone();
+            this.remark = entity.getRemark();
+        }
+    }
 
     @ApiModelProperty("用户ID")
     private Long userId;
