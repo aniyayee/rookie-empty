@@ -35,6 +35,13 @@ public class RookieRuntimeException extends RuntimeException {
         fillErrorCode(errorCode, args);
     }
 
+    /**
+     * 注意  如果是try catch的情况下捕获异常 并转为RookieRuntimeException的话  一定要填入Throwable e
+     *
+     * @param e 捕获到的原始异常
+     * @param errorCode 错误码
+     * @param args 错误详细信息参数
+     */
     public RookieRuntimeException(Throwable e, ErrorCodeInterface errorCode, Object... args) {
         super(e);
         fillErrorCode(errorCode, args);

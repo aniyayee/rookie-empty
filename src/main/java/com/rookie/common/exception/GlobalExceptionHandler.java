@@ -1,79 +1,105 @@
 package com.rookie.common.exception;
 
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.rookie.common.core.dto.ResponseDTO;
 import com.rookie.common.exception.error.ErrorCode;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
+import com.rookie.common.exception.error.ErrorCode.Business;
+import com.rookie.common.exception.error.ErrorCode.Client;
+import com.rookie.common.exception.error.ErrorCode.Internal;
+import java.nio.file.AccessDeniedException;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
+ * 全局异常处理器
+ *
  * @author yayee
  */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @InitBinder
-    public void handleInitBinder(WebDataBinder dataBinder) {
-        dataBinder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), false));
-    }
-
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = {BindException.class, ValidationException.class, MethodArgumentNotValidException.class})
-    public ExceptionData handleParameterVerificationException(Exception e) {
-        ExceptionData.ExceptionDataBuilder exceptionDataBuilder = ExceptionData.builder();
-        log.error("Exception: ", e);
-        if (e instanceof BindException) {
-            BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
-            bindingResult.getAllErrors()
-                .forEach(a -> exceptionDataBuilder.error(((FieldError) a).getField() + ": " + a.getDefaultMessage()));
-        } else if (e instanceof ConstraintViolationException) {
-            if (e.getMessage() != null) {
-                exceptionDataBuilder.error(e.getMessage());
-            }
-        } else {
-            exceptionDataBuilder.error("invalid parameter");
-        }
-        return exceptionDataBuilder.build();
+    /**
+     * 权限校验异常
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseDTO<?> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
+        log.error("请求地址'{}',权限校验失败'{}'", request.getRequestURI(), e.getMessage());
+        return ResponseDTO.fail(new RookieRuntimeException(Business.PERMISSION_NOT_ALLOWED_TO_OPERATE));
     }
 
     /**
-     * handle api exception.
-     *
-     * @param e ApiException
-     * @return ResponseDTO
+     * 请求方式不支持
      */
-    @ResponseBody
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseDTO<?> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
+        HttpServletRequest request) {
+        log.error("请求地址'{}',不支持'{}'请求", request.getRequestURI(), e.getMethod());
+        return ResponseDTO.fail(new RookieRuntimeException(Client.COMMON_REQUEST_METHOD_INVALID, e.getMethod()));
+    }
+
+    /**
+     * 业务异常
+     */
     @ExceptionHandler(RookieRuntimeException.class)
-    public ResponseDTO<?> processApiException(RookieRuntimeException e) {
+    public ResponseDTO<?> handleServiceException(RookieRuntimeException e) {
         log.error(e.getMessage(), e);
         return ResponseDTO.fail(e, e.getPayload());
     }
 
     /**
-     * handle other exception.
-     *
-     * @param e Exception
-     * @return ResponseDTO
+     * 捕获缓存类当中的错误
      */
-    @ResponseBody
-    @ExceptionHandler(Exception.class)
-    public ResponseDTO<?> processException(Exception e) {
+    @ExceptionHandler(UncheckedExecutionException.class)
+    public ResponseDTO<?> handleServiceException(UncheckedExecutionException e) {
         log.error(e.getMessage(), e);
-        return ResponseDTO.fail(new RookieRuntimeException(ErrorCode.HTTP_STATUS_500));
+        return ResponseDTO.fail(new RookieRuntimeException(Internal.GET_CACHE_FAILED, e.getMessage()));
+    }
+
+    /**
+     * 拦截未知的运行时异常
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseDTO<?> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
+        String errorMsg = String.format("请求地址'%s',发生未知异常.", request.getRequestURI());
+        log.error(errorMsg, e);
+        return ResponseDTO.fail(new RookieRuntimeException(Internal.INTERNAL_ERROR, e.getMessage()));
+    }
+
+    /**
+     * 系统异常
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseDTO<?> handleException(Exception e, HttpServletRequest request) {
+        String errorMsg = String.format("请求地址'%s',发生未知异常.", request.getRequestURI());
+        log.error(errorMsg, e);
+        return ResponseDTO.fail(new RookieRuntimeException(Internal.INTERNAL_ERROR, e.getMessage()));
+    }
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(BindException.class)
+    public ResponseDTO<?> handleBindException(BindException e) {
+        log.error(e.getMessage(), e);
+        String message = e.getAllErrors().get(0).getDefaultMessage();
+        return ResponseDTO.fail(
+            new RookieRuntimeException(ErrorCode.Client.COMMON_REQUEST_PARAMETERS_INVALID, message));
+    }
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseDTO<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
+        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        return ResponseDTO.fail(
+            new RookieRuntimeException(ErrorCode.Client.COMMON_REQUEST_PARAMETERS_INVALID, message));
     }
 }
