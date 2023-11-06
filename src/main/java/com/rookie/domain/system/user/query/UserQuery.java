@@ -1,8 +1,8 @@
-package com.rookie.domain.user.query;
+package com.rookie.domain.system.user.query;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rookie.common.core.page.AbstractPageQuery;
-import com.rookie.domain.user.db.SysUserEntity;
+import com.rookie.domain.system.user.db.SysUserEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;

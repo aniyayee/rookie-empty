@@ -1,8 +1,8 @@
-package com.rookie.domain.role.query;
+package com.rookie.domain.system.role.query;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rookie.common.core.page.AbstractPageQuery;
-import com.rookie.domain.role.db.SysRoleEntity;
+import com.rookie.domain.system.role.db.SysRoleEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

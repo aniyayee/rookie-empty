@@ -1,4 +1,4 @@
-package com.rookie.domain.user.db;
+package com.rookie.domain.system.user.db;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -39,5 +39,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
             throw new RookieRuntimeException(ErrorCode.Business.COMMON_OBJECT_NOT_FOUND, id, "用户");
         }
         return byId;
+    }
+
+    @Override
+    public SysUserEntity loadUserByUsername(String phone) {
+        QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("phone", phone);
+        return baseMapper.selectOne(queryWrapper);
     }
 }

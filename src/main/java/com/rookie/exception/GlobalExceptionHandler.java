@@ -1,7 +1,8 @@
-package com.rookie.common.exception;
+package com.rookie.exception;
 
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.rookie.common.core.dto.ResponseDTO;
+import com.rookie.common.exception.RookieRuntimeException;
 import com.rookie.common.exception.error.ErrorCode;
 import com.rookie.common.exception.error.ErrorCode.Business;
 import com.rookie.common.exception.error.ErrorCode.Client;

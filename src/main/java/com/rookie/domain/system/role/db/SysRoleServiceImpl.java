@@ -1,11 +1,11 @@
-package com.rookie.domain.role.db;
+package com.rookie.domain.system.role.db;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rookie.common.exception.RookieRuntimeException;
 import com.rookie.common.exception.error.ErrorCode;
-import com.rookie.domain.user.db.SysUserEntity;
-import com.rookie.domain.user.db.SysUserMapper;
+import com.rookie.domain.system.user.db.SysUserEntity;
+import com.rookie.domain.system.user.db.SysUserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +42,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleEntity
     public SysRoleEntity loadById(Long id) {
         SysRoleEntity byId = this.getById(id);
         if (byId == null) {
-            throw new RookieRuntimeException(ErrorCode.Business.COMMON_OBJECT_NOT_FOUND, id, "用户");
+            throw new RookieRuntimeException(ErrorCode.Business.COMMON_OBJECT_NOT_FOUND, id, "角色");
         }
         return byId;
     }

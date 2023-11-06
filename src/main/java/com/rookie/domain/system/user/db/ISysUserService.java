@@ -1,4 +1,4 @@
-package com.rookie.domain.user.db;
+package com.rookie.domain.system.user.db;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,4 +16,6 @@ public interface ISysUserService extends IService<SysUserEntity> {
     boolean isPhoneDuplicated(Long id, String phone);
 
     SysUserEntity loadById(Long id);
+
+    SysUserEntity loadUserByUsername(String phone);
 }

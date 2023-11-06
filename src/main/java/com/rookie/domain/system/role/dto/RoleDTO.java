@@ -1,6 +1,6 @@
-package com.rookie.domain.role.dto;
+package com.rookie.domain.system.role.dto;
 
-import com.rookie.domain.role.db.SysRoleEntity;
+import com.rookie.domain.system.role.db.SysRoleEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

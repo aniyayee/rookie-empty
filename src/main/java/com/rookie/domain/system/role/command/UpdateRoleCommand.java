@@ -1,4 +1,4 @@
-package com.rookie.domain.role.command;
+package com.rookie.domain.system.role.command;
 
 import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;

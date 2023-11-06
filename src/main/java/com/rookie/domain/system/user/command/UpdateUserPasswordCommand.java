@@ -1,4 +1,4 @@
-package com.rookie.domain.user.command;
+package com.rookie.domain.system.user.command;
 
 import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;

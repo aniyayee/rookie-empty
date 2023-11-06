@@ -1,4 +1,4 @@
-package com.rookie.domain.role.db;
+package com.rookie.domain.system.role.db;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 

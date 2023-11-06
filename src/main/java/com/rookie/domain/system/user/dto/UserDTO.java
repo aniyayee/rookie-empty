@@ -1,9 +1,10 @@
-package com.rookie.domain.user.dto;
+package com.rookie.domain.system.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rookie.domain.user.db.SysUserEntity;
+import com.rookie.domain.system.user.db.SysUserEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author yayee

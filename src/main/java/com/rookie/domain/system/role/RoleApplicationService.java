@@ -1,4 +1,4 @@
-package com.rookie.domain.role;
+package com.rookie.domain.system.role;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -6,12 +6,12 @@ import com.rookie.common.core.page.PageDTO;
 import com.rookie.common.exception.RookieRuntimeException;
 import com.rookie.common.exception.error.ErrorCode;
 import com.rookie.common.exception.error.ErrorCode.Business;
-import com.rookie.domain.role.command.AddRoleCommand;
-import com.rookie.domain.role.command.UpdateRoleCommand;
-import com.rookie.domain.role.db.ISysRoleService;
-import com.rookie.domain.role.db.SysRoleEntity;
-import com.rookie.domain.role.dto.RoleDTO;
-import com.rookie.domain.role.query.RoleQuery;
+import com.rookie.domain.system.role.command.AddRoleCommand;
+import com.rookie.domain.system.role.command.UpdateRoleCommand;
+import com.rookie.domain.system.role.db.ISysRoleService;
+import com.rookie.domain.system.role.db.SysRoleEntity;
+import com.rookie.domain.system.role.dto.RoleDTO;
+import com.rookie.domain.system.role.query.RoleQuery;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
