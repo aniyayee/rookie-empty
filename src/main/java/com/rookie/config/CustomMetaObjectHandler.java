@@ -1,6 +1,8 @@
 package com.rookie.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.rookie.customize.user.SystemLoginUserHolder;
+import com.rookie.customize.user.web.SystemLoginUser;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -28,9 +30,9 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             this.setFieldValByName(CREATE_TIME_FIELD, LocalDateTime.now(), metaObject);
         }
 
-        //if (metaObject.hasSetter(CREATOR_ID_FIELD)) {
-        //    this.strictInsertFill(metaObject, CREATOR_ID_FIELD, Long.class, getUserIdSafely());
-        //}
+        if (metaObject.hasSetter(CREATOR_ID_FIELD)) {
+            this.strictInsertFill(metaObject, CREATOR_ID_FIELD, Long.class, getUserIdSafely());
+        }
     }
 
     @Override
@@ -39,19 +41,19 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             this.setFieldValByName(UPDATE_TIME_FIELD, LocalDateTime.now(), metaObject);
         }
 
-        //if (metaObject.hasSetter(UPDATER_ID_FIELD)) {
-        //    this.strictUpdateFill(metaObject, UPDATER_ID_FIELD, Long.class, getUserIdSafely());
-        //}
+        if (metaObject.hasSetter(UPDATER_ID_FIELD)) {
+            this.strictUpdateFill(metaObject, UPDATER_ID_FIELD, Long.class, getUserIdSafely());
+        }
     }
 
-    //public Long getUserIdSafely() {
-    //    Long userId = null;
-    //    try {
-    //        LoginUser loginUser = AuthenticationUtils.getLoginUser();
-    //        userId = loginUser.getUserId();
-    //    } catch (Exception e) {
-    //        log.info("can not find user in current thread.");
-    //    }
-    //    return userId;
-    //}
+    public Long getUserIdSafely() {
+        Long userId = null;
+        try {
+            SystemLoginUser loginUser = SystemLoginUserHolder.getSystemLoginUser();
+            userId = loginUser.getUserId();
+        } catch (Exception e) {
+            log.info("can not find user in current thread.");
+        }
+        return userId;
+    }
 }

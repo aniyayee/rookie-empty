@@ -80,6 +80,7 @@ public enum ErrorCode implements ErrorCodeInterface {
         LOGIN_CAPTCHA_CODE_WRONG(10203, "验证码错误"),
         LOGIN_CAPTCHA_CODE_EXPIRE(10204, "验证码过期"),
         LOGIN_CAPTCHA_CODE_NULL(10205, "验证码为空"),
+        LOGIN_PHONE_FORMAT_ERROR(10105, "用户手机号格式错误"),
 
         // ----------------------------- UPLOAD -----------------------------------------
         UPLOAD_FILE_TYPE_NOT_ALLOWED(10401, "不允许上传的文件类型，仅允许：{}"),
