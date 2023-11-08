@@ -85,7 +85,7 @@
     <dependency>
       <artifactId>hutool-all</artifactId>
       <groupId>cn.hutool</groupId>
-      <version>5.7.22</version>
+      <version>5.8.22</version>
     </dependency>
     <dependency>
       <artifactId>commons-lang3</artifactId>
