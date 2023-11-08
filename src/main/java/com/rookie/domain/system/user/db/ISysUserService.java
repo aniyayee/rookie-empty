@@ -17,5 +17,5 @@ public interface ISysUserService extends IService<SysUserEntity> {
 
     SysUserEntity loadById(Long id);
 
-    SysUserEntity loadUserByUsername(String phone);
+    SysUserEntity loadByPhone(String phone);
 }

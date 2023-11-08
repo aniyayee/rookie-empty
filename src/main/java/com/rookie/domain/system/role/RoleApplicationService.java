@@ -33,7 +33,6 @@ public class RoleApplicationService {
         roleService.save(entity);
     }
 
-
     public void updateRole(UpdateRoleCommand command) {
         SysRoleEntity entity = roleService.loadById(command.getRoleId());
         BeanUtil.copyProperties(command, entity, "roleId");

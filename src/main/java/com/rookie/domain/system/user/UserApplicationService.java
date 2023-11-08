@@ -19,6 +19,7 @@ import com.rookie.domain.system.user.query.UserQuery;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -80,7 +81,11 @@ public class UserApplicationService {
     }
 
     public SysUserEntity getUserByPhone(String phone) {
-        return userService.loadUserByUsername(phone);
+        SysUserEntity entity = userService.loadByPhone(phone);
+        if (ObjectUtils.isEmpty(entity)) {
+            entity = this.createDefaultUserWithPhone(phone);
+        }
+        return entity;
     }
 
     public SysUserEntity createDefaultUserWithPhone(String phone) {

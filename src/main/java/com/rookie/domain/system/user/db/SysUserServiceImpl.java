@@ -42,7 +42,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     }
 
     @Override
-    public SysUserEntity loadUserByUsername(String phone) {
+    public SysUserEntity loadByPhone(String phone) {
         QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("phone", phone);
         return baseMapper.selectOne(queryWrapper);

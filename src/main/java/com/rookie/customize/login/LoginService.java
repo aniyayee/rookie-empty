@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -61,24 +60,20 @@ public class LoginService {
         if (StringUtils.isBlank(cacheCaptcha)) {
             throw new RookieRuntimeException(Business.LOGIN_CAPTCHA_CODE_EXPIRE);
         }
-        // 3.校验通过 查询用户是否注册
+        // 3.校验通过 查询用户
         SysUserEntity entity = userApplicationService.getUserByPhone(phone);
-        if (ObjectUtils.isEmpty(entity)) {
-            // 4.用户不存在 创建默认用户
-            entity = userApplicationService.createDefaultUserWithPhone(phone);
-        }
         CurrentLoginUserDTO userDTO = userApplicationService.getLoginUserInfo(entity.getUserId());
-        // 5.保存用户信息到redis
-        // 5.1 生成token
+        // 4.保存用户信息到redis
+        // 4.1.生成token
         String token = UUID.fastUUID().toString(true);
-        // 5.2 dto转化位hash
+        // 4.2.dto转化位hash
         Map<String, Object> userMap = BeanUtil.beanToMap(userDTO, new HashMap<>(),
             CopyOptions.create().setIgnoreNullValue(true)
                 .setFieldValueEditor((fieldName, fieldValue) -> fieldValue.toString()));
-        // 5.2 记录用户信息到redis
+        // 4.3.记录用户信息到redis
         String tokenKey = RedisConstants.LOGIN_USER_KEY + token;
         stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
-        // 5.3 设置token过期时间
+        // 4.4.设置token过期时间
         stringRedisTemplate.expire(tokenKey, RedisConstants.LOGIN_USER_TTL, TimeUnit.SECONDS);
         return new TokenDTO(token, userDTO);
     }
