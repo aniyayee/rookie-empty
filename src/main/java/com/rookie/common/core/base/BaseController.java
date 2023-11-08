@@ -1,8 +1,8 @@
 package com.rookie.common.core.base;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.date.DateUtil;
 import java.beans.PropertyEditorSupport;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -19,10 +19,10 @@ public class BaseController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         // Date 类型转换
-        binder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) {
-                setValue(LocalDateTimeUtil.parse(text));
+                setValue(DateUtil.parseDate(text));
             }
         });
     }

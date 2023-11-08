@@ -3,7 +3,7 @@ package com.rookie.config;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.rookie.customize.user.SystemLoginUserHolder;
 import com.rookie.customize.user.web.SystemLoginUser;
-import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -27,10 +27,11 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         if (metaObject.hasSetter(CREATE_TIME_FIELD)) {
-            this.setFieldValByName(CREATE_TIME_FIELD, LocalDateTime.now(), metaObject);
+            this.setFieldValByName(CREATE_TIME_FIELD, new Date(), metaObject);
         }
 
-        if (metaObject.hasSetter(CREATOR_ID_FIELD)) {
+        Long userId = getUserIdSafely();
+        if (metaObject.hasSetter(CREATOR_ID_FIELD) && userId != null) {
             this.strictInsertFill(metaObject, CREATOR_ID_FIELD, Long.class, getUserIdSafely());
         }
     }
@@ -38,10 +39,11 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         if (metaObject.hasSetter(UPDATE_TIME_FIELD)) {
-            this.setFieldValByName(UPDATE_TIME_FIELD, LocalDateTime.now(), metaObject);
+            this.setFieldValByName(UPDATE_TIME_FIELD, new Date(), metaObject);
         }
 
-        if (metaObject.hasSetter(UPDATER_ID_FIELD)) {
+        Long userId = getUserIdSafely();
+        if (metaObject.hasSetter(UPDATER_ID_FIELD) && userId != null) {
             this.strictUpdateFill(metaObject, UPDATER_ID_FIELD, Long.class, getUserIdSafely());
         }
     }
@@ -52,7 +54,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             SystemLoginUser loginUser = SystemLoginUserHolder.getSystemLoginUser();
             userId = loginUser.getUserId();
         } catch (Exception e) {
-            log.info("can not find user in current thread.");
+            log.warn("can not find user in current thread.");
         }
         return userId;
     }
