@@ -1,4 +1,4 @@
-package com.rookie.utils.time;
+package com.rookie.utils;
 
 import cn.hutool.core.date.DateUtil;
 import java.util.Date;

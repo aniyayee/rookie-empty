@@ -1,4 +1,4 @@
-package com.rookie.customize.login.command;
+package com.rookie.customize.service.login.command;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;

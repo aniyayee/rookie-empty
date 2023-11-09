@@ -1,6 +1,6 @@
 package com.rookie.config;
 
-import com.rookie.config.xss.JsonHtmlXssTrimSerializer;
+import com.rookie.security.xss.JsonHtmlXssTrimSerializer;
 import java.util.TimeZone;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Configuration;

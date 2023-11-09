@@ -1,4 +1,4 @@
-package com.rookie.customize.user.web;
+package com.rookie.customize.service.login.domain;
 
 import lombok.Data;
 

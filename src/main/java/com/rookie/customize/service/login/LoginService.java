@@ -1,4 +1,4 @@
-package com.rookie.customize.login;
+package com.rookie.customize.service.login;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -8,7 +8,7 @@ import com.rookie.common.constants.RedisConstants;
 import com.rookie.common.exception.RookieRuntimeException;
 import com.rookie.common.exception.error.ErrorCode;
 import com.rookie.common.exception.error.ErrorCode.Business;
-import com.rookie.customize.login.command.LoginCommand;
+import com.rookie.customize.service.login.command.LoginCommand;
 import com.rookie.domain.common.dto.CurrentLoginUserDTO;
 import com.rookie.domain.common.dto.TokenDTO;
 import com.rookie.domain.system.user.UserApplicationService;

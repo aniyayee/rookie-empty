@@ -1,8 +1,5 @@
-package com.rookie.utils;
+package com.rookie.mybatisplus;
 
-import cn.hutool.core.io.resource.ResourceUtil;
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
@@ -23,7 +20,6 @@ import com.rookie.common.core.base.BaseController;
 import com.rookie.common.core.base.BaseEntity;
 import java.util.Collections;
 import lombok.Data;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * @author yayee
@@ -31,11 +27,6 @@ import org.yaml.snakeyaml.Yaml;
 @Data
 @lombok.Builder
 public class CodeGenerator {
-
-    public static final String DATA_SOURCE_FULL_PATH = "spring.datasource.";
-    public static final String URL_PATH = DATA_SOURCE_FULL_PATH + "url";
-    public static final String USERNAME_PATH = DATA_SOURCE_FULL_PATH + "username";
-    public static final String PASSWORD_PATH = DATA_SOURCE_FULL_PATH + "password";
 
     private String author;
     private String module;
@@ -47,29 +38,40 @@ public class CodeGenerator {
     private Boolean isExtendsFromBaseEntity;
 
     /**
-     * 避免覆盖掉原有生成的类  生成的类 放在当前模块下的/target/generated-code目录底下 有需要更新的实体自己在手动覆盖  或者 挪动过去
+     * 避免覆盖掉原有生成的类  生成的类 放在orm子模块下的/target/generated-code目录底下 有需要更新的实体自己在手动覆盖  或者 挪动过去
      */
     public static void main(String[] args) {
-        // 默认读取application yml中的数据库配置
-        JSON ymlJson = JSONUtil.parse(new Yaml().load(ResourceUtil.getStream("application.yml")));
+        // 默认读取application-dev yml中的master数据库配置
+//        JSON ymlJson = JSONUtil.parse(new Yaml().load(ResourceUtil.getStream("application-dev.yml")));
 
-        CodeGenerator generator = CodeGenerator.builder().databaseUrl(JSONUtil.getByPath(ymlJson, URL_PATH).toString())
-            .username(JSONUtil.getByPath(ymlJson, USERNAME_PATH).toString())
-            .password(JSONUtil.getByPath(ymlJson, PASSWORD_PATH).toString()).author("yayee")
-            //生成的类 放在当前模块下的
-            // /target/generated-code目录底下
-            .module("/target/generated-code").parentPackage("com.rookie").tableName("sys_user_role")
+        String databaseUrl = "jdbc:mysql://localhost:3306/db_rookie";
+        String username = "root";
+        String password = "root";
+
+        CodeGenerator generator = CodeGenerator.builder()
+            .databaseUrl(databaseUrl)
+            .username(username)
+            .password(password)
+            .author("yayee")
+            //生成的类 放在orm子模块下的/target/generated-code目录底下
+            .module("/target/generated-code")
+            .parentPackage("com.rookie")
+            .tableName("sys_operation_log")
             // 决定是否继承基类
-            .isExtendsFromBaseEntity(true).build();
+            .isExtendsFromBaseEntity(false)
+            .build();
 
         generator.generateCode();
     }
 
     public void generateCode() {
-        FastAutoGenerator generator = FastAutoGenerator.create(new Builder(databaseUrl, username, password)
+        FastAutoGenerator generator = FastAutoGenerator.create(
+            new Builder(databaseUrl, username, password)
 //            .schema("mybatis-plus")
-            // all these three options
-            .dbQuery(new MySqlQuery()).typeConvert(new MySqlTypeConvert()).keyWordsHandler(new MySqlKeyWordsHandler()));
+                // all these three options
+                .dbQuery(new MySqlQuery())
+                .typeConvert(new MySqlTypeConvert())
+                .keyWordsHandler(new MySqlKeyWordsHandler()));
 
         globalConfig(generator);
         packageConfig(generator);
@@ -88,45 +90,61 @@ public class CodeGenerator {
      * @param generator 生成器
      */
     private void globalConfig(FastAutoGenerator generator) {
-        generator.globalConfig(builder -> builder
-            // override old code of file
-            .fileOverride().outputDir(System.getProperty("user.dir") + module + "/src/main/java")
-            // use date type under package of java utils
-            .dateType(DateType.ONLY_DATE)
-            // 配置生成文件中的author
-            .author(author)
+        generator.globalConfig(
+            builder -> builder
+                // override old code of file
+                .fileOverride()
+                .outputDir(System.getProperty("user.dir") + module + "/src/main/java")
+                // use date type under package of java utils
+                .dateType(DateType.ONLY_DATE)
+                // 配置生成文件中的author
+                .author(author)
 //                    .enableKotlin()
-            // generate swagger annotations.
-            .enableSwagger()
-            // 注释日期的格式
-            .commentDate("yyyy-MM-dd").build());
+                // generate swagger annotations.
+                .enableSwagger()
+                // 注释日期的格式
+                .commentDate("yyyy-MM-dd")
+                .build());
     }
 
 
     private void packageConfig(FastAutoGenerator generator) {
         generator.packageConfig(builder -> builder
             // parent package name
-            .parent(parentPackage).entity("entity").service("service").serviceImpl("service.impl")
-            .mapper("mapper").xml("mapper.xml").controller("controller").other("other")
+            .parent(parentPackage)
+            .moduleName("log")
+            .entity("db")
+            .service("db")
+            .serviceImpl("db")
+            .mapper("db")
+            .xml("mapper")
+            .controller("controller")
+            .other("other")
             // define dir related to OutputFileType(entity,mapper,service,controller,mapper.xml)
-            .pathInfo(Collections.singletonMap(OutputFile.mapperXml,
-                System.getProperty("user.dir") + module + "/src/main/resources/mapper/system/test")).build());
+            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, System.getProperty("user.dir") + module
+                + "/src/main/resources/mapper/system/test"))
+            .build());
     }
 
     private void templateConfig(FastAutoGenerator generator) {
         //  customization code template. disable if you don't have specific requirement.
-        generator.templateConfig(builder -> builder.disable(TemplateType.ENTITY).entity("/templates/entity.java")
-            .service("/templates/service.java").serviceImpl("/templates/serviceImpl.java")
-            .mapper("/templates/mapper.java").mapperXml("/templates/mapper.xml")
-            .controller("/templates/controller.java").build());
+        generator.templateConfig(builder -> builder
+            .disable(TemplateType.ENTITY)
+            .entity("/templates/entity.java")
+            .service("/templates/service.java")
+            .serviceImpl("/templates/serviceImpl.java")
+            .mapper("/templates/mapper.java")
+            .mapperXml("/templates/mapper.xml")
+            .controller("/templates/controller.java")
+            .build());
     }
 
     private void injectionConfig(FastAutoGenerator generator) {
         //  customization code template. disable if you don't have specific requirement.
         generator.injectionConfig(builder -> {
             // Customization
-            builder.beforeOutputFile((tableInfo, objectMap) -> System.out.println(
-                    "tableInfo: " + tableInfo.getEntityName() + " objectMap: " + objectMap.size()))
+            builder.beforeOutputFile((tableInfo, objectMap) -> System.out.println("tableInfo: " +
+                    tableInfo.getEntityName() + " objectMap: " + objectMap.size()))
 //                .customMap(Collections.singletonMap("test", "baomidou"))
 //                .customFile(Collections.singletonMap("test.txt", "/templates/test.vm"))
                 .build();
@@ -141,11 +159,12 @@ public class CodeGenerator {
                 // Global Configuration
                 .enableCapitalMode()
                 // does not generate view
-                .enableSkipView().disableSqlFilter()
+                .enableSkipView()
+                .disableSqlFilter()
                 // filter which tables need to be generated
 //                    .likeTable(new LikeTable("USER"))
 //                    .addInclude("t_simple")
-//                    .addTablePrefix("t_", "c_")
+                   .addTablePrefix("sys_")
 //                    .addFieldSuffix("_flag")
                 .addInclude(tableName);
 
@@ -175,7 +194,8 @@ public class CodeGenerator {
             // deleted的字段设置成tinyint  长度为1
             .logicDeleteColumnName("deleted")
 //                    .logicDeletePropertyName("deleteFlag")
-            .naming(NamingStrategy.underline_to_camel).columnNaming(NamingStrategy.underline_to_camel)
+            .naming(NamingStrategy.underline_to_camel)
+            .columnNaming(NamingStrategy.underline_to_camel)
             // 如果不需要BaseEntity  请注释掉以下两行
 //            .superClass(BaseEntity.class)
 //            .addSuperEntityColumns("creator_id", "create_time", "creator_name", "updater_id", "update_time", "updater_name", "deleted")
@@ -186,10 +206,12 @@ public class CodeGenerator {
             .addTableFills(new Property("updateTime", FieldFill.INSERT_UPDATE))
             .addTableFills(new Property("updaterId", FieldFill.INSERT_UPDATE))
             // ID strategy AUTO, NONE, INPUT, ASSIGN_ID, ASSIGN_UUID;
-            .idType(IdType.AUTO).formatFileName("%sEntity");
+            .idType(IdType.AUTO)
+            .formatFileName("%sEntity");
 
         if (isExtendsFromBaseEntity) {
-            entityBuilder.superClass(BaseEntity.class)
+            entityBuilder
+                .superClass(BaseEntity.class)
                 .addSuperEntityColumns("creator_id", "create_time", "creator_name", "updater_id", "update_time",
                     "updater_name", "deleted");
         }
@@ -197,17 +219,22 @@ public class CodeGenerator {
         entityBuilder.build();
     }
 
-
     private void controllerConfig(StrategyConfig.Builder builder) {
-        builder.controllerBuilder().superClass(BaseController.class).enableHyphenStyle().enableRestStyle()
-            .formatFileName("%sController").build();
+        builder.controllerBuilder()
+            .superClass(BaseController.class)
+            .enableHyphenStyle()
+            .enableRestStyle()
+            .formatFileName("%sController")
+            .build();
     }
 
     private void serviceConfig(StrategyConfig.Builder builder) {
         builder.serviceBuilder()
 //                    .superServiceClass(BaseService.class)
 //                    .superServiceImplClass(BaseServiceImpl.class)
-            .formatServiceFileName("I%sService").formatServiceImplFileName("%sServiceImpl").build();
+            .formatServiceFileName("I%sService")
+            .formatServiceImplFileName("%sServiceImpl")
+            .build();
     }
 
     private void mapperConfig(StrategyConfig.Builder builder) {
@@ -217,6 +244,8 @@ public class CodeGenerator {
 //                    .enableBaseResultMap()
 //                    .enableBaseColumnList()
 //                    .cache(MyMapperCache.class)
-            .formatMapperFileName("%sMapper").formatXmlFileName("%sMapper").build();
+            .formatMapperFileName("%sMapper")
+            .formatXmlFileName("%sMapper")
+            .build();
     }
 }

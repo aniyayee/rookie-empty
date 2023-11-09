@@ -1,8 +1,8 @@
-package com.rookie.config;
+package com.rookie.mybatisplus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.rookie.customize.user.SystemLoginUserHolder;
-import com.rookie.customize.user.web.SystemLoginUser;
+import com.rookie.security.SystemLoginUserHolder;
+import com.rookie.customize.service.login.domain.SystemLoginUser;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;

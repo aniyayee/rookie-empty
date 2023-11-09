@@ -1,6 +1,6 @@
-package com.rookie.customize.user;
+package com.rookie.security;
 
-import com.rookie.customize.user.web.SystemLoginUser;
+import com.rookie.customize.service.login.domain.SystemLoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 

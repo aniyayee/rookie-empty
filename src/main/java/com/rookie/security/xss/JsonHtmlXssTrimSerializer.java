@@ -1,4 +1,4 @@
-package com.rookie.config.xss;
+package com.rookie.security.xss;
 
 import cn.hutool.http.HtmlUtil;
 import com.fasterxml.jackson.core.JsonParser;

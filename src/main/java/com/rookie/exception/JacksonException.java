@@ -1,4 +1,4 @@
-package com.rookie.utils.jackson;
+package com.rookie.exception;
 
 /**
  * @author yayee

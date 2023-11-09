@@ -3,7 +3,7 @@ package com.rookie.config;
 import cn.hutool.core.util.ObjectUtil;
 import com.rookie.common.exception.RookieRuntimeException;
 import com.rookie.common.exception.error.ErrorCode;
-import com.rookie.customize.user.SystemLoginUserHolder;
+import com.rookie.security.SystemLoginUserHolder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

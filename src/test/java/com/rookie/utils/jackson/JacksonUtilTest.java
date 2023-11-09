@@ -1,6 +1,7 @@
 package com.rookie.utils.jackson;
 
 import cn.hutool.core.date.DateUtil;
+import com.rookie.utils.JacksonUtil;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import org.junit.Assert;

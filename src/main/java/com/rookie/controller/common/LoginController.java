@@ -1,10 +1,10 @@
 package com.rookie.controller.common;
 
 import com.rookie.common.core.dto.ResponseDTO;
-import com.rookie.customize.login.LoginService;
-import com.rookie.customize.login.command.LoginCommand;
-import com.rookie.customize.user.SystemLoginUserHolder;
-import com.rookie.customize.user.web.SystemLoginUser;
+import com.rookie.customize.service.login.LoginService;
+import com.rookie.customize.service.login.command.LoginCommand;
+import com.rookie.security.SystemLoginUserHolder;
+import com.rookie.customize.service.login.domain.SystemLoginUser;
 import com.rookie.domain.common.dto.CurrentLoginUserDTO;
 import com.rookie.domain.common.dto.TokenDTO;
 import com.rookie.domain.system.user.UserApplicationService;
