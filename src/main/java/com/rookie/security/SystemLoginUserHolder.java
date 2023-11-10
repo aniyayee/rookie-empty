@@ -15,7 +15,7 @@ public class SystemLoginUserHolder {
     public static void saveSystemLoginUser(SystemLoginUser user) {
         if (ObjectUtils.isNotEmpty(user)) {
             THREAD_LOCAL.set(user);
-            log.debug("[ADD THREAD_LOCAL: {}]", user);
+            log.debug("ADD THREAD_LOCAL: {}", user);
         }
     }
 
@@ -25,12 +25,12 @@ public class SystemLoginUserHolder {
 
     public static SystemLoginUser getSystemLoginUser() {
         SystemLoginUser loginUser = THREAD_LOCAL.get();
-        log.debug("[GET THREAD_LOCAL: {}]", loginUser);
+        log.debug("GET THREAD_LOCAL: {}", loginUser);
         return loginUser;
     }
 
     public static void removeSystemLoginUser() {
         THREAD_LOCAL.remove();
-        log.debug("[REMOVE THREAD_LOCAL]");
+        log.debug("REMOVE THREAD_LOCAL");
     }
 }
