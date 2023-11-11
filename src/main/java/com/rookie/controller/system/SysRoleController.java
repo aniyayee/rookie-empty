@@ -3,11 +3,13 @@ package com.rookie.controller.system;
 import com.rookie.common.core.base.BaseController;
 import com.rookie.common.core.dto.ResponseDTO;
 import com.rookie.common.core.page.PageDTO;
+import com.rookie.customize.aop.accessLog.AccessLog;
 import com.rookie.domain.system.role.RoleApplicationService;
 import com.rookie.domain.system.role.command.AddRoleCommand;
 import com.rookie.domain.system.role.command.UpdateRoleCommand;
 import com.rookie.domain.system.role.dto.RoleDTO;
 import com.rookie.domain.system.role.query.RoleQuery;
+import com.rookie.enums.common.BusinessTypeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class SysRoleController extends BaseController {
     private final RoleApplicationService roleApplicationService;
 
     @ApiOperation("Add role")
+    @AccessLog(title = "角色管理", businessType = BusinessTypeEnum.ADD)
     @PostMapping("/add")
     public ResponseDTO<Void> add(@Validated @RequestBody AddRoleCommand command) {
         roleApplicationService.addRole(command);
@@ -43,6 +46,7 @@ public class SysRoleController extends BaseController {
     }
 
     @ApiOperation("Edit role")
+    @AccessLog(title = "角色管理", businessType = BusinessTypeEnum.MODIFY)
     @PostMapping("/edit")
     public ResponseDTO<Void> edit(@RequestBody UpdateRoleCommand command) {
         roleApplicationService.updateRole(command);
@@ -50,6 +54,7 @@ public class SysRoleController extends BaseController {
     }
 
     @ApiOperation("Delete role")
+    @AccessLog(title = "角色管理", businessType = BusinessTypeEnum.DELETE)
     @PostMapping("/delete/{roleId}")
     public ResponseDTO<Void> remove(@PathVariable Long roleId) {
         roleApplicationService.deleteRole(roleId);

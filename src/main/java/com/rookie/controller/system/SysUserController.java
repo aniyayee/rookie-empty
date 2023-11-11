@@ -3,12 +3,14 @@ package com.rookie.controller.system;
 import com.rookie.common.core.base.BaseController;
 import com.rookie.common.core.dto.ResponseDTO;
 import com.rookie.common.core.page.PageDTO;
+import com.rookie.customize.aop.accessLog.AccessLog;
 import com.rookie.domain.system.user.UserApplicationService;
 import com.rookie.domain.system.user.command.AddUserCommand;
 import com.rookie.domain.system.user.command.UpdateUserCommand;
 import com.rookie.domain.system.user.command.UpdateUserPasswordCommand;
 import com.rookie.domain.system.user.dto.UserDTO;
 import com.rookie.domain.system.user.query.UserQuery;
+import com.rookie.enums.common.BusinessTypeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,7 @@ public class SysUserController extends BaseController {
     private final UserApplicationService userApplicationService;
 
     @ApiOperation("Add user")
+    @AccessLog(title = "用户管理", businessType = BusinessTypeEnum.ADD)
     @PostMapping("/add")
     public ResponseDTO<Void> add(@Validated @RequestBody AddUserCommand command) {
         userApplicationService.addUser(command);
@@ -44,6 +47,7 @@ public class SysUserController extends BaseController {
     }
 
     @ApiOperation("Edit user")
+    @AccessLog(title = "用户管理", businessType = BusinessTypeEnum.MODIFY)
     @PostMapping("/edit")
     public ResponseDTO<Void> edit(@RequestBody UpdateUserCommand command) {
         userApplicationService.updateUser(command);
@@ -51,6 +55,7 @@ public class SysUserController extends BaseController {
     }
 
     @ApiOperation("Delete user")
+    @AccessLog(title = "用户管理", businessType = BusinessTypeEnum.DELETE)
     @PostMapping("/delete/{userId}")
     public ResponseDTO<Void> remove(@PathVariable Long userId) {
         userApplicationService.deleteUser(userId);
@@ -72,6 +77,7 @@ public class SysUserController extends BaseController {
     }
 
     @ApiOperation("Update user password")
+    @AccessLog(title = "用户管理", businessType = BusinessTypeEnum.MODIFY)
     @PostMapping("/password")
     public ResponseDTO<Void> updatePassword(@RequestBody UpdateUserPasswordCommand command) {
         userApplicationService.updatePassword(command);
