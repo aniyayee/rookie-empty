@@ -22,6 +22,10 @@ public class UserDTO {
             this.email = entity.getEmail();
             this.phone = entity.getPhone();
             this.remark = entity.getRemark();
+            this.creatorId = entity.getCreatorId();
+            this.createTime = entity.getCreateTime();
+            this.updaterId = entity.getUpdaterId();
+            this.updateTime = entity.getUpdateTime();
         }
     }
 

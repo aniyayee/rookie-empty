@@ -38,6 +38,9 @@ public class SysRoleEntity extends BaseEntity<SysRoleEntity> {
     @TableField("role_key")
     private String roleKey;
 
+    @ApiModelProperty("备注")
+    @TableField("remark")
+    private String remark;
 
     @Override
     public Serializable pkVal() {

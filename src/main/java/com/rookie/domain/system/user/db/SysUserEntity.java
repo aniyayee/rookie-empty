@@ -54,6 +54,9 @@ public class SysUserEntity extends BaseEntity<SysUserEntity> {
     @TableField("phone")
     private String phone;
 
+    @ApiModelProperty("备注")
+    @TableField("remark")
+    private String remark;
 
     @Override
     public Serializable pkVal() {
