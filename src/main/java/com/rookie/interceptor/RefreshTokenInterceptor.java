@@ -1,4 +1,4 @@
-package com.rookie.config;
+package com.rookie.interceptor;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.rookie.common.constants.Constants;

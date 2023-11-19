@@ -1,5 +1,7 @@
 package com.rookie.config;
 
+import com.rookie.interceptor.LoginInterceptor;
+import com.rookie.interceptor.RefreshTokenInterceptor;
 import javax.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;

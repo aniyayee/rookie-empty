@@ -1,4 +1,4 @@
-package com.rookie.config;
+package com.rookie.interceptor;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.rookie.common.exception.RookieRuntimeException;
