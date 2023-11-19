@@ -1,9 +1,11 @@
 package com.rookie.controller.system;
 
+import com.rookie.common.constants.RoleKeyConstants;
 import com.rookie.common.core.base.BaseController;
 import com.rookie.common.core.dto.ResponseDTO;
 import com.rookie.common.core.page.PageDTO;
 import com.rookie.customize.aop.accessLog.AccessLog;
+import com.rookie.customize.aop.permission.CheckRole;
 import com.rookie.domain.system.role.RoleApplicationService;
 import com.rookie.domain.system.role.command.AddRoleCommand;
 import com.rookie.domain.system.role.command.UpdateRoleCommand;
@@ -38,6 +40,7 @@ public class SysRoleController extends BaseController {
     private final RoleApplicationService roleApplicationService;
 
     @ApiOperation("Add role")
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
     @AccessLog(title = "角色管理", businessType = BusinessTypeEnum.ADD)
     @PostMapping("/add")
     public ResponseDTO<Void> add(@Validated @RequestBody AddRoleCommand command) {
@@ -46,6 +49,7 @@ public class SysRoleController extends BaseController {
     }
 
     @ApiOperation("Edit role")
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
     @AccessLog(title = "角色管理", businessType = BusinessTypeEnum.MODIFY)
     @PostMapping("/edit")
     public ResponseDTO<Void> edit(@RequestBody UpdateRoleCommand command) {
@@ -54,6 +58,7 @@ public class SysRoleController extends BaseController {
     }
 
     @ApiOperation("Delete role")
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
     @AccessLog(title = "角色管理", businessType = BusinessTypeEnum.DELETE)
     @PostMapping("/delete/{roleId}")
     public ResponseDTO<Void> remove(@PathVariable Long roleId) {

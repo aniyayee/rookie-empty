@@ -1,9 +1,11 @@
 package com.rookie.controller.system;
 
+import com.rookie.common.constants.RoleKeyConstants;
 import com.rookie.common.core.base.BaseController;
 import com.rookie.common.core.dto.ResponseDTO;
 import com.rookie.common.core.page.PageDTO;
 import com.rookie.customize.aop.accessLog.AccessLog;
+import com.rookie.customize.aop.permission.CheckRole;
 import com.rookie.domain.system.user.UserApplicationService;
 import com.rookie.domain.system.user.command.AddUserCommand;
 import com.rookie.domain.system.user.command.UpdateUserCommand;
@@ -39,6 +41,7 @@ public class SysUserController extends BaseController {
     private final UserApplicationService userApplicationService;
 
     @ApiOperation("Add user")
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
     @AccessLog(title = "用户管理", businessType = BusinessTypeEnum.ADD)
     @PostMapping("/add")
     public ResponseDTO<Void> add(@Validated @RequestBody AddUserCommand command) {
@@ -47,6 +50,7 @@ public class SysUserController extends BaseController {
     }
 
     @ApiOperation("Edit user")
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
     @AccessLog(title = "用户管理", businessType = BusinessTypeEnum.MODIFY)
     @PostMapping("/edit")
     public ResponseDTO<Void> edit(@RequestBody UpdateUserCommand command) {
@@ -55,6 +59,7 @@ public class SysUserController extends BaseController {
     }
 
     @ApiOperation("Delete user")
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
     @AccessLog(title = "用户管理", businessType = BusinessTypeEnum.DELETE)
     @PostMapping("/delete/{userId}")
     public ResponseDTO<Void> remove(@PathVariable Long userId) {
@@ -77,6 +82,7 @@ public class SysUserController extends BaseController {
     }
 
     @ApiOperation("Update user password")
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
     @AccessLog(title = "用户管理", businessType = BusinessTypeEnum.MODIFY)
     @PostMapping("/password")
     public ResponseDTO<Void> updatePassword(@RequestBody UpdateUserPasswordCommand command) {

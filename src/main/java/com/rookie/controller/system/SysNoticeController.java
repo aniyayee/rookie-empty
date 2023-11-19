@@ -1,9 +1,11 @@
 package com.rookie.controller.system;
 
+import com.rookie.common.constants.RoleKeyConstants;
 import com.rookie.common.core.base.BaseController;
 import com.rookie.common.core.dto.ResponseDTO;
 import com.rookie.common.core.page.PageDTO;
 import com.rookie.customize.aop.accessLog.AccessLog;
+import com.rookie.customize.aop.permission.CheckRole;
 import com.rookie.domain.system.notice.NoticeApplicationService;
 import com.rookie.domain.system.notice.command.AddNoticeCommand;
 import com.rookie.domain.system.notice.command.UpdateNoticeCommand;
@@ -31,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yayee
  * @since 2023-11-16
  */
-@Api(value = "Notice Interfaces", tags = "Notice Interfaces")
+@Api(value = "公告管理", tags = "公告管理")
 @RestController
 @RequestMapping("/system/notice")
 @Validated
@@ -41,7 +43,8 @@ public class SysNoticeController extends BaseController {
     private final NoticeApplicationService noticeApplicationService;
 
     @ApiOperation("添加公告")
-    @AccessLog(title = "通知公告", businessType = BusinessTypeEnum.ADD)
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
+    @AccessLog(title = "公告管理", businessType = BusinessTypeEnum.ADD)
     @PostMapping("/add")
     public ResponseDTO<Void> add(@RequestBody AddNoticeCommand command) {
         noticeApplicationService.addNotice(command);
@@ -49,7 +52,8 @@ public class SysNoticeController extends BaseController {
     }
 
     @ApiOperation("修改公告")
-    @AccessLog(title = "通知公告", businessType = BusinessTypeEnum.MODIFY)
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
+    @AccessLog(title = "公告管理", businessType = BusinessTypeEnum.MODIFY)
     @PostMapping("/edit")
     public ResponseDTO<Void> edit(@RequestBody UpdateNoticeCommand command) {
         noticeApplicationService.updateNotice(command);
@@ -57,7 +61,8 @@ public class SysNoticeController extends BaseController {
     }
 
     @ApiOperation("删除公告")
-    @AccessLog(title = "通知公告", businessType = BusinessTypeEnum.DELETE)
+    @CheckRole(value = {RoleKeyConstants.ADMIN, RoleKeyConstants.TEST})
+    @AccessLog(title = "公告管理", businessType = BusinessTypeEnum.DELETE)
     @PostMapping("/delete/{noticeId}")
     public ResponseDTO<Void> remove(@PathVariable Long noticeId) {
         noticeApplicationService.deleteNotice(noticeId);
