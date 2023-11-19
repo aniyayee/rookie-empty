@@ -28,7 +28,8 @@ public class OperationLogQuery extends AbstractPageQuery<SysOperationLogEntity> 
             .like(StringUtils.isNotEmpty(requestModule), "request_module", requestModule);
 
         this.timeRangeColumn = "operation_time";
-
+        this.orderColumn = "operation_id";
+        this.orderDirection = "descending";
         return queryWrapper;
     }
 }

@@ -43,15 +43,15 @@ public class LogApplicationService {
 
     private final ISysOperationLogService operationLogService;
 
+    public void deleteOperationLog(Long operationId) {
+        operationLogService.removeById(operationId);
+    }
+
     public PageDTO<OperationLogDTO> getOperationLogList(OperationLogQuery query) {
         Page<SysOperationLogEntity> page = operationLogService.page(query.toPage(), query.toQueryWrapper());
         List<OperationLogDTO> records = page.getRecords().stream().map(OperationLogDTO::new)
             .collect(Collectors.toList());
         return new PageDTO<>(records, page);
-    }
-
-    public void deleteOperationLog(Long operationId) {
-        operationLogService.removeById(operationId);
     }
 
     public SysOperationLogEntity createOperationLog(JoinPoint joinPoint, AccessLog accessLog, Exception e,
